@@ -6,9 +6,13 @@ import java.io.Serializable;
     public class Message implements Serializable {
 
         private static final long serialVersionUID = 1L;
-        private String sender;
-        private String receiver;
+        private String sender;//发送者
+        private String receiver;//接收者
         private String content;//消息内容
+
+
+
+    private String[] userlist;
         private String messageType;//定义消息类型
         private String sendTime;//发送时间
 
@@ -51,5 +55,12 @@ import java.io.Serializable;
         public String getMessageType() {
             return messageType;
         }
-}
 
+    public void setUserlist(String[] userlist) {
+        this.userlist = userlist;
+    }
+
+    public String[] getUserlist() {
+        return userlist;
+    }
+}

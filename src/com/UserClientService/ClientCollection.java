@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class ClientCollection {
     private static HashMap<String, ClientConnent> clients = new HashMap<String, ClientConnent>();
     public static void addClient(String userName, ClientConnent clientConnent) {
+
         clients.put(userName, clientConnent);
     }
     public static ClientConnent getClient(String userName) {

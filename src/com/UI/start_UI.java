@@ -39,7 +39,7 @@ public class start_UI { //启动界面
                      loop = false;
                      break;
                  default:
-                     System.out.println("Please select and think clear: ");
+                     System.out.println("Please select and think clearly ");
              }
          }
      }
@@ -52,31 +52,49 @@ public class start_UI { //启动界面
         用户端和服务端能接收到其他用户上线和下线的信息
         用户端可以找回自己的密码，找回密码需要具备的条件可自定义*/
          String key1 = "";
+         int i= 0;
          while (loop) {
+             if(i==0){
              System.out.println("TV用户：" + UserName);
-             System.out.println("\n\t 1.显示其他在线用户");
+             System.out.println("\t 1.显示其他在线用户");
              System.out.println("\t 2.平台聊天");
              System.out.println("\t 3.用户私聊");
              System.out.println("\t 4.发送文件");
              System.out.println("\t 9. Exit");
-             System.out.println("Please select number: ");
-             key = Utility.readString(1);
+
+                 System.out.println("Please select number: ");
+             }else{
+                 System.out.println("选择number，进行操作: ");
+             }
+             key1 = Utility.readString(1);
              switch (key1) {
                  case "1":
-                     System.out.println("显示其他用户");
+                     System.out.println("==显示其他用户==");
+                     clientService.requestUserList();
+                     try {
+                         Thread.sleep(500);
+                     } catch (InterruptedException e) {
+                         throw new RuntimeException(e);
+                     }
+                     System.out.println("显示其他用户成功");
+                     break;
                  case "2":
                      System.out.println("平台聊天");
+                     break;
                  case "3":
                      System.out.println("用户私聊");
+                        break;
                  case "4":
                      System.out.println("发送文件");
+                        break;
                  case "9":
                      System.out.println("Exit");
                      loop = false;
                      break;
                     default:
-                        System.out.println("Please select and think clear: ");
+                        System.out.println("Please select and think clearly ");
              }
+             i++;
          }
      }
  }
