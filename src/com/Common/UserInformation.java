@@ -5,14 +5,19 @@ import java.io.Serializable;
 public class UserInformation implements Serializable {
     private String userName;
     private String password;
-    public void User() {}  //保存User信息
+    private String realName;//真实姓名
+    private String birthPlace;//出生地
+      //保存User信息
+
     private static final long serialVersionUID = 1L;
 
-    public UserInformation() {
+    public UserInformation(String userName, String password, String realName, String birthPlace) {
         this.userName = userName;
         this.password = password;
+        this.realName = realName;
+        this.birthPlace = birthPlace;
     }
-
+    public UserInformation() {}
     public String getUserName() {
         return userName;
     }
@@ -27,6 +32,22 @@ public class UserInformation implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public String getBirthPlace() {
+        return birthPlace;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public void setBirthPlace(String birthPlace) {
+        this.birthPlace = birthPlace;
     }
 }
 
