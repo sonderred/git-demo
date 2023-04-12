@@ -15,9 +15,10 @@ public class start_UI { //启动界面
     }
     public void ask_UI() {
          while (loop) {
-             System.out.println("Welcome to the TV show management system");
+             System.out.println("===Welcome to the TV show management system===");
              System.out.println("\t\t1. 登录账号");
              System.out.println("\t\t2. 注册账号");
+             System.out.println("\t\t3. 找回密码");
              System.out.println("\t\t9. Exit");
              System.out.print("Please select number: ");
 
@@ -56,12 +57,32 @@ public class start_UI { //启动界面
                             System.out.println("注册失败");
                         }
                         break;
+                    case "3":
+                        System.out.println("找回密码");
+                        System.out.println("请输入用户名：");
+                        String userName = Utility.readString(50);
+                        System.out.println("==以下为认证身份操作==");
+                        System.out.println("请输入真实姓名；");
+                        String realName = Utility.readString(50);
+                        System.out.println("请输入出生地：");
+                        String birthBlace = Utility.readString(50);
+                       if(clientService.spareJudgeUser(userName,realName,birthBlace)){
+                        clientService.requestFindPassword(userName,realName,birthBlace);
+                           try {
+                               sleep(1000);
+                           } catch (InterruptedException e) {
+                               throw new RuntimeException(e);
+                           }
+                       }
+                       else { System.out.println("认证失败");
+                       }
+                        break;
                  case "9":
                      System.out.println("Exit");
                      loop = false;
                      break;
                  default:
-                     System.out.println("Please select and think clearly ");
+                     System.out.println("Please select number: ");
              }
          }
      }
@@ -78,11 +99,10 @@ public class start_UI { //启动界面
          boolean loop1 = true;
          while (loop1) {
              if(i==0){
-             System.out.println("TV用户：" + UserName);
+             System.out.println("=== TV用户：" + UserName+"===");
              System.out.println("\t 1.显示其他在线用户");
              System.out.println("\t 2.用户私聊");
              System.out.println("\t 3.平台聊天");
-             System.out.println("\t 5.找回密码");
              System.out.println("\t 6.查询个人信息");
              System.out.println("\t 7.修改个人信息");
              System.out.println("\t 9. Exit");
@@ -128,10 +148,6 @@ public class start_UI { //启动界面
                      System.out.println("请输入转发文件位置及名字：");
                         String destFilePath = Utility.readString(100);
                      clientService.sendFile(fileReceiver,srcFilePath,destFilePath);
-                        break;
-                        case "5":
-                            //
-                        System.out.println("找回密码");
                         break;
                         case "6":
                             System.out.println("查询个人信息");

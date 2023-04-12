@@ -16,8 +16,9 @@ import java.io.Serializable;
         private byte[] fileBytes;//文件数据
         private String realName;//真实姓名
         private String birthPlace;//出生地
-        private String newUserName;//用户名
-        private String newPassword;//密码
+        private String newUserName;//新用户名
+        private String newPassword;//新密码
+        private String passWord;
         public void setSender(String sender) {
             this.sender = sender;
         }
@@ -118,5 +119,13 @@ import java.io.Serializable;
 
     public String getNewPassword() {
         return newPassword;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 }

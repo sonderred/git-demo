@@ -65,7 +65,8 @@ public class ClientService {
             e.printStackTrace();
         }
     }
-//用户私聊
+
+    //用户私聊
     public void privateChat(String receiver, String message) {
         System.out.println("消息发送中...");
         Message privateMessage = new Message();
@@ -82,7 +83,8 @@ public class ClientService {
             e.printStackTrace();
         }
     }
-//平台聊天
+
+    //平台聊天
     public void platformChat(String message) {
         System.out.println("消息发送中...");
         Message platformMessage = new Message();
@@ -98,8 +100,9 @@ public class ClientService {
             e.printStackTrace();
         }
     }
-//发送文件
-    public void sendFile(String receiver, String srcfilePath,String desFilePath) {
+
+    //发送文件
+    public void sendFile(String receiver, String srcfilePath, String desFilePath) {
         System.out.println("文件发送中...");
         Message fileMessage = new Message();
         fileMessage.setMessageType(MessageType.message_sendingFile);
@@ -115,7 +118,7 @@ public class ClientService {
             byte[] fileBytes = new byte[(int) new File(srcFilePath).length()];
             fileInputStream.read(fileBytes);//将文件数据读取到字节数组中
             fileMessage.setFileBytes(fileBytes);//将文件数据存储到Message对象中
-           if(fileInputStream!=null) fileInputStream.close();
+            if (fileInputStream != null) fileInputStream.close();
             ObjectOutputStream objectOutputStream =
                     new ObjectOutputStream(ClientCollection.getClient(user.getUserName()).getSocket().getOutputStream());
             objectOutputStream.writeObject(fileMessage);
@@ -123,6 +126,7 @@ public class ClientService {
             e.printStackTrace();
         }
     }
+
     public void returnOnlineMessage() {
         Message message = new Message();
         message.setMessageType(MessageType.message_ret_userOnLine);
@@ -135,6 +139,7 @@ public class ClientService {
             e.printStackTrace();
         }
     }
+
     //退出
     public void exit() {
         Message message = new Message();
@@ -148,8 +153,10 @@ public class ClientService {
             ClientCollection.removeClient(user.getUserName());
             System.exit(0);
         } catch (IOException e) {
-            e.printStackTrace();}
+            e.printStackTrace();
+        }
     }
+
     //查询个人信息
     public void requestReferUserInformation() {
         Message message = new Message();
@@ -166,7 +173,8 @@ public class ClientService {
 
 
     }
-//修改个人信息
+
+    //修改个人信息
     public void requestModifyUserInformation(String newUserName, String newpassWord) {
 
         Message message = new Message();
@@ -187,6 +195,52 @@ public class ClientService {
         //修改成功后，将ClientCollection中的键值对删除，重新添加
         ClientCollection.addClient(message.getNewUserName(), ClientCollection.getClient(message.getSender()));
         ClientCollection.removeClient(message.getSender());
-    }
-}
 
+    }
+    //开启备用线程，用于连接服务器以查看密码
+    public boolean spareJudgeUser(String UserName, String realName, String birthPlace) {
+        boolean flag = false;
+        user.setUserName(UserName);
+        user.setRealName(realName);
+        user.setBirthPlace(birthPlace);
+        user.setPassword("000");try {
+            //创建一个Socket对象，指定服务器的IP地址和端口号
+            //客户端的真实姓名和出生地
+                socket = new Socket(InetAddress.getByName("127.0.0.1"), 9999);
+                ObjectOutputStream objectOutStream = new ObjectOutputStream(socket.getOutputStream());
+                objectOutStream.writeObject(user);//发送对象
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+            Message message = (Message) objectInputStream.readObject();//接收对象
+            if (message.getMessageType().equals(MessageType.message_succeed)) {
+                flag = true;
+                ClientConnent clientConnent = new ClientConnent(socket);//创建线程
+                clientConnent.start();//启动线程
+                ClientCollection.addClient(user.getUserName(), clientConnent);//将线程添加到集合中
+            }
+        } catch (IOException | ClassNotFoundException e){}
+       try{
+           if (!flag) {
+            socket.close();
+             }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+        return flag;
+    }
+        public void requestFindPassword(String userName, String realName, String birthPlace) {
+            Message message = new Message();
+            message.setMessageType(MessageType.message_findPassword);
+            message.setSender(userName);
+            message.setRealName(realName);
+            message.setBirthPlace(birthPlace);
+            try {
+                //发送服务器，获得线程的socket的输出流
+                //错误·
+                ObjectOutputStream objectOutputStream =
+                        new ObjectOutputStream(ClientCollection.getClient(user.getUserName()).getSocket().getOutputStream());
+                objectOutputStream.writeObject(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+}

@@ -88,6 +88,14 @@ public class ClientConnent extends Thread {
                     getSocket().close();
                     break;
                 }
+                //返回找回密码的回复
+                else if(message.getMessageType().equals(MessageType.message_findPassword)){
+                    System.out.println("记好密码，不能多看一眼："+message.getPassWord());
+                    //重新登录
+                    System.out.println("请重新登录");
+                    getSocket().close();
+                    break;
+                }
                 else {
                     System.out.println("无用输出");
                 }
@@ -101,4 +109,5 @@ public class ClientConnent extends Thread {
     public Socket getSocket() {
         return socket;
     }
+
 }

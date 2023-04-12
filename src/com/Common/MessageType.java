@@ -19,4 +19,5 @@ public interface MessageType {
     String message_referUserInformation = "15";//请求用户信息
     String message_ret_referUserInformation = "16";//返回用户信息
     String message_modifyUserInformation = "17";//修改用户信息
+    String message_findPassword = "18";//找回密码
 }
